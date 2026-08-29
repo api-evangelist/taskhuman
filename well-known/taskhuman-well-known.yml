@@ -1,0 +1,78 @@
+generated: '2026-08-29'
+method: probed
+source: live probes of /.well-known/ on every TaskHuman host that still resolves
+summary: >-
+  No /.well-known/ document is served anywhere on the TaskHuman estate. The company's own origin
+  (taskhuman.com and www.taskhuman.com, same nginx behind Cloudflare) answers HTTP 401 with
+  WWW-Authenticate: Basic realm="taskhuman2pro" for EVERY path, including /robots.txt and every
+  /.well-known/ probe, so nothing on the primary domain is publicly readable. The only host on the
+  domain still serving public content is resources.taskhuman.com, a leftover HubSpot marketing
+  microsite, and it 404s every /.well-known/ path.
+pointer_basis: >-
+  NO WellKnown pointer and NO SecurityTxt pointer emitted. Every probe below is a 401 or a 404;
+  not one path returned a document. This file records an absence, and an absence must not be
+  wired as a presence.
+notes: >-
+  taskhuman.com's 401 is an nginx HTTP Basic authentication wall, NOT a bot challenge or WAF
+  interstitial — the response carries a WWW-Authenticate: Basic header with a named realm, and it
+  is returned identically to browser and crawler user agents. It is a wall the operator put up,
+  not one our crawler tripped. The former API and application hosts (api.taskhuman.com,
+  api.prod.taskhuman.com, app.taskhuman.com, admin.taskhuman.com) either no longer resolve or are
+  dangling CNAMEs pointing at deleted CloudFront distributions and ELBs, so there was no API host
+  left to probe.
+hosts:
+  - host: https://taskhuman.com
+    note: >-
+      Entire origin behind nginx HTTP Basic auth (realm "taskhuman2pro"); every path returns 401.
+    documents:
+      - path: /.well-known/security.txt
+        status: 401
+      - path: /.well-known/openid-configuration
+        status: 401
+      - path: /.well-known/oauth-authorization-server
+        status: 401
+      - path: /.well-known/api-catalog
+        status: 401
+      - path: /.well-known/ai-plugin.json
+        status: 401
+      - path: /.well-known/agent-card.json
+        status: 401
+      - path: /.well-known/agent.json
+        status: 401
+  - host: https://resources.taskhuman.com
+    note: >-
+      HubSpot-hosted marketing resource microsite (6 pages of 2022-2023 sales collateral); the only
+      publicly readable TaskHuman host remaining. Serves a soft-404 HTML page for every miss, so
+      each 404 below is a real 404 status code, not a rendered document.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+unresolvable_hosts:
+  - host: api.taskhuman.com
+    dns: NXDOMAIN
+    note: Present in certificate transparency logs; no longer resolves.
+  - host: api.prod.taskhuman.com
+    dns: NXDOMAIN
+  - host: api.india.taskhuman.com
+    dns: NXDOMAIN
+  - host: app.taskhuman.com
+    dns: dangling CNAME -> d1gz8vxzlbfg17.cloudfront.net (no A record)
+  - host: admin.taskhuman.com
+    dns: dangling CNAME -> prod-web-layer-lb-1973325236.us-east-2.elb.amazonaws.com (no A record)
+  - host: status.taskhuman.com
+    dns: resolves; redirects to https://www.atlassian.com/software/statuspage
+    note: >-
+      Unclaimed/deleted Statuspage. NOT a served status page — no StatusPage pointer emitted.
+checked: '2026-08-29'

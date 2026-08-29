@@ -1,7 +1,15 @@
 aid: taskhuman
 name: TaskHuman
-description: 'TaskHuman is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  TaskHuman was a mobile-first, on-demand human coaching platform that connected employees with live
+  1:1 video coaching across wellbeing, fitness, leadership, professional growth, sales and mentorship
+  topics, sold to employers as a benefit and delivered through iOS, Android and web apps plus Slack
+  and Microsoft Teams integrations. The San Francisco Bay Area company raised roughly $35M from
+  investors including U.S. Venture Partners and Madrona and marketed a coach network spanning more
+  than a thousand skill areas. The company ceased operations in 2026; as of this profile the entire
+  taskhuman.com origin answers HTTP 401 behind an nginx HTTP Basic authentication wall and the
+  product's API and application hosts no longer resolve, so no developer program, documentation or
+  machine-readable contract remains reachable.
 url: https://raw.githubusercontent.com/api-evangelist/taskhuman/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
@@ -12,6 +20,13 @@ created: '2026-08-29'
 modified: '2026-08-29'
 tags:
 - Company
+- Coaching
+- Human Resources
+- Employee Benefits
+- Wellbeing
+- Learning and Development
+- Video
+- Defunct
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -19,5 +34,33 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/taskhuman-domain-security.yml
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://taskhuman.com/
+- type: Lifecycle
+  url: lifecycle/taskhuman-lifecycle.yml
+x-enrichment:
+  date: '2026-08-29'
+  status: minimal
+  artifacts_added: 3
+  pass: local-v1
+x-coverage:
+  state: none
+  reason: defunct
+  detail: >-
+    TaskHuman ceased operations and locked its own site down: every path on taskhuman.com now
+    returns HTTP 401 behind an nginx HTTP Basic auth wall (realm "taskhuman2pro"), the API hosts
+    recorded in certificate transparency (api.taskhuman.com, api.prod.taskhuman.com) no longer
+    resolve, app.taskhuman.com and admin.taskhuman.com are dangling CNAMEs at deleted AWS
+    endpoints, and status.taskhuman.com redirects to Atlassian's unclaimed-Statuspage landing page.
+  evidence:
+    - url: https://taskhuman.com/
+      status: 401
+    - url: https://taskhuman.com/robots.txt
+      status: 401
+    - url: https://api.taskhuman.com/
+      status: 0
+    - url: https://resources.taskhuman.com/
+      status: 200
+  checked: '2026-08-29'

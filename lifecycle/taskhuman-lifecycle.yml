@@ -1,0 +1,66 @@
+generated: '2026-08-29'
+method: probed
+source: live DNS/HTTP probes of every TaskHuman host, 2026-08-29
+summary: >-
+  TaskHuman's service is discontinued. This artifact records the observed end-of-life state of the
+  estate rather than a versioning or deprecation policy, because no policy was ever published and
+  there is no longer a developer surface on which one could be published.
+status: discontinued
+versioning_policy: null
+deprecation_policy: null
+sunset_headers: null
+sla: null
+status_page: null
+status_page_note: >-
+  status.taskhuman.com resolves and was clearly once an Atlassian Statuspage, but it now redirects
+  to https://www.atlassian.com/software/statuspage — the redirect Statuspage serves for a page that
+  is unclaimed or deleted. There is no live status page, so no StatusPage pointer is emitted.
+observed_end_of_life:
+  origin_locked:
+    detail: >-
+      Every path on taskhuman.com and www.taskhuman.com returns HTTP 401 with
+      WWW-Authenticate: Basic realm="taskhuman2pro" from nginx behind Cloudflare — including
+      /robots.txt, /sitemap.xml, /llms.txt and every /.well-known/ path. The public marketing site,
+      the FAQ and the About page that search engines still index are all unreachable.
+    evidence:
+      - url: https://taskhuman.com/
+        status: 401
+      - url: https://taskhuman.com/faq/
+        status: 401
+      - url: https://taskhuman.com/robots.txt
+        status: 401
+  api_hosts_gone:
+    detail: >-
+      The API hosts recorded in certificate transparency logs no longer resolve, and the app and
+      admin hosts are dangling CNAMEs pointing at deleted AWS resources.
+    evidence:
+      - host: api.taskhuman.com
+        dns: NXDOMAIN
+      - host: api.prod.taskhuman.com
+        dns: NXDOMAIN
+      - host: app.taskhuman.com
+        dns: dangling CNAME -> d1gz8vxzlbfg17.cloudfront.net
+      - host: admin.taskhuman.com
+        dns: dangling CNAME -> prod-web-layer-lb-1973325236.us-east-2.elb.amazonaws.com
+  residual_surface:
+    detail: >-
+      One host still serves public content: resources.taskhuman.com, a HubSpot-hosted marketing
+      microsite whose sitemap lists six pages of 2022-2023 case studies and e-books. It is not a
+      developer surface and is not maintained.
+    evidence:
+      - url: https://resources.taskhuman.com/
+        status: 200
+      - url: https://resources.taskhuman.com/sitemap.xml
+        status: 200
+reported_shutdown:
+  claim: >-
+    TaskHuman is widely reported by former employees to have announced a shutdown in early 2026
+    after running out of funding. API Evangelist did not observe this first-hand and records it as
+    a secondary report, not as a provider-published fact; the primary evidence in this file is the
+    probe record above.
+  provider_published: false
+dangling_dns_note: >-
+  app.taskhuman.com and admin.taskhuman.com are dangling CNAMEs into AWS. Dangling records at
+  deleted CloudFront/ELB endpoints are a known subdomain-takeover risk for whoever still controls
+  the taskhuman.com zone. Recorded as an observation for the domain owner, nothing more.
+checked: '2026-08-29'
